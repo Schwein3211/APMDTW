@@ -5,37 +5,37 @@ import numpy as np
 
 def apmdtw(x, y, cost_matrix,  warp=1, w=inf, s=1.0):
     """
-    Computes Dynamic Time Warping (DTW) of two sequences.
+    Computes Angle-distance Penalized Metric Dynamic Time Warping (APMDTW) of two sequences.
 
     :param array x: N1*M array
     :param array y: N2*M array
     :param int warp: how many shifts are computed.
     :param int w: window size limiting the maximal distance between indices of matched entries |i,j|.
     :param float s: weight applied on off-diagonal moves of the path. As s gets larger, the warping path is increasingly biased towards the diagonal
-    Returns the minimum distance, the cost matrix, the accumulated cost matrix, and the wrap path.
+    Returns the minimum distance, the accumulated cost matrix, and the wrap path.
     """
-    assert len(x) #assert断言语句，assert 表达式，如果表达式为真，则继续执行，如果表达式为假，则直接崩溃
+    assert len(x)
     assert len(y)
-    assert isinf(w) or (w >= abs(len(x) - len(y))) #isinf()检查无穷大，返回bool型值
+    assert isinf(w) or (w >= abs(len(x) - len(y)))
     assert s>0
     r, c = len(x), len(y)
 
-    if not isinf(w): #w不为无限大的值
-        D0 = full((r + 1, c + 1), inf) #numpy.full(shape, fill_value, dtype=None, order='C')[source], 返回一个根据指定的shape和type，并用fill_value填充的新数组
+    if not isinf(w):
+        D0 = full((r + 1, c + 1), inf)
         for i in range(1, r + 1):
             D0[i, max(1, i - w):min(c + 1, i + w + 1)] = 0
         D0[0, 0] = 0
     else: #w为无限大的值
         D0 = zeros((r + 1, c + 1))
-        D0[0, 1:] = inf #第一行的值全部为无穷大
-        D0[1:, 0] = inf #第一列的值全部为无穷大
-    D1 = D0[1:, 1:]  # view
+        D0[0, 1:] = inf
+        D0[1:, 0] = inf
+    D1 = D0[1:, 1:]
     D0[1:, 1:] = cost_matrix
 
     C = D1.copy()
     jrange = range(c)
     for i in range(r):
-        if not isinf(w):#w不为inf
+        if not isinf(w):
             jrange = range(max(0, i - w), min(c, i + w + 1))
         for j in jrange:
             min_list = [D0[i, j]]
@@ -75,5 +75,4 @@ def _traceback(D):
         p.insert(0, i)
         q.insert(0, j)
     return np.array(p), np.array(q)
-
 
