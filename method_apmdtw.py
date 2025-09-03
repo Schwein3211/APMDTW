@@ -1,5 +1,3 @@
-
-
 import os
 import numpy as np
 from dtw_penalty import apmdtw
