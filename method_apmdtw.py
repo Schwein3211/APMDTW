@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from dtw_penalty import apmdtw
+from apmdtw import apmdtw
 
 from utils import load_data,load_data_query, load_timeseries_id, write_result_file_ts_similarity
 
