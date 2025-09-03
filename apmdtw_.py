@@ -25,7 +25,7 @@ def apmdtw(x, y, cost_matrix,  warp=1, w=inf, s=1.0):
         for i in range(1, r + 1):
             D0[i, max(1, i - w):min(c + 1, i + w + 1)] = 0
         D0[0, 0] = 0
-    else: #w为无限大的值
+    else: 
         D0 = zeros((r + 1, c + 1))
         D0[0, 1:] = inf
         D0[1:, 0] = inf
